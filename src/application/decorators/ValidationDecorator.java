@@ -1,7 +1,6 @@
 package application.decorators;
 
 import application.IPedidoService;
-import domain.Pedido;
 
 public class ValidationDecorator extends PedidoServiceDecorator {
 
@@ -10,16 +9,16 @@ public class ValidationDecorator extends PedidoServiceDecorator {
     }
 
     @Override
-    public void crearPedido(Pedido pedido) {
+    public void crearPedido(String nombre, double precio) {
 
-        if (pedido == null) {
-            throw new IllegalArgumentException("El pedido no puede ser null.");
+        if (nombre == null || nombre.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
         }
 
-        if (pedido.getProductos() == null || pedido.getProductos().isEmpty()) {
-            throw new IllegalArgumentException("El pedido debe tener al menos un producto.");
+        if (precio <= 0) {
+            throw new IllegalArgumentException("El precio debe ser mayor a 0.");
         }
 
-        super.crearPedido(pedido);
+        super.crearPedido(nombre, precio);
     }
 }

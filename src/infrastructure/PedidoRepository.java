@@ -12,6 +12,7 @@ public class PedidoRepository implements IPedidoRepository {
 
     @Override
     public void save(Pedido pedido) {
+        pedido.setId(db.generateId());
         db.getPedidos().add(pedido);
     }
 

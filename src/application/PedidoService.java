@@ -2,6 +2,7 @@ package application;
 
 import domain.Pedido;
 import domain.PedidoPrototype;
+import domain.Producto;
 import infrastructure.IPedidoRepository;
 import infrastructure.IUnitOfWork;
 
@@ -11,28 +12,23 @@ public class PedidoService implements IPedidoService {
     private IUnitOfWork unitOfWork;
     private PedidoPrototype pedidoPrototype;
 
-    public PedidoService(IPedidoRepository pedidoRepository, IUnitOfWork unitOfWork) {
+    public PedidoService(IPedidoRepository pedidoRepository, IUnitOfWork unitOfWork, PedidoPrototype pedidoPrototype) {
         this.pedidoRepository = pedidoRepository;
         this.unitOfWork = unitOfWork;
         this.pedidoPrototype = new PedidoPrototype();
     }
 
     @Override
-    public void crearPedido(Pedido pedido) {
-        // Clonar plantilla base usando Prototype
-        Pedido nuevoPedido = pedidoPrototype.obtenerPlantilla();
+    public void crearPedido(String nombreProducto, double precio) {
 
-        // Agregar productos del pedido recibido
-        for (domain.Producto p : pedido.getProductos()) {
-            nuevoPedido.agregarProducto(p);
-        }
+    Pedido nuevoPedido = pedidoPrototype.obtenerPlantilla();
 
-        // Guardar y confirmar transacción
-        pedidoRepository.save(nuevoPedido);
-        unitOfWork.commit();
+    Producto producto = new Producto(nombreProducto, precio);
+    nuevoPedido.agregarProducto(producto);
 
-        System.out.println("Pedido creado. Total: " + nuevoPedido.getTotal());
-    }
+    pedidoRepository.save(nuevoPedido);
+    unitOfWork.commit();
+}
 
     @Override
     public void cancelarPedido(int id) {
@@ -44,7 +40,6 @@ public class PedidoService implements IPedidoService {
         }
 
         pedido.cancelar();
-        pedidoRepository.save(pedido);
         unitOfWork.commit();
 
         System.out.println("Pedido " + id + " cancelado.");
@@ -60,7 +55,6 @@ public class PedidoService implements IPedidoService {
         }
 
         pedido.confirmar();
-        pedidoRepository.save(pedido);
         unitOfWork.commit();
 
         System.out.println("Pedido " + id + " confirmado. Total: " + pedido.getTotal());

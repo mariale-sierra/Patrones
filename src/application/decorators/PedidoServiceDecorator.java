@@ -1,7 +1,6 @@
 package application.decorators;
 
 import application.IPedidoService;
-import domain.Pedido;
 
 public abstract class PedidoServiceDecorator implements IPedidoService {
 
@@ -12,8 +11,8 @@ public abstract class PedidoServiceDecorator implements IPedidoService {
     }
 
     @Override
-    public void crearPedido(Pedido pedido) {
-        wrappedService.crearPedido(pedido);
+    public void crearPedido(String nombre, double precio) {
+        wrappedService.crearPedido(nombre, precio);
     }
 
     @Override

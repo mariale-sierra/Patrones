@@ -1,7 +1,6 @@
 package application.decorators;
 
 import application.IPedidoService;
-import domain.Pedido;
 
 public class SecurityDecorator extends PedidoServiceDecorator {
 
@@ -10,17 +9,16 @@ public class SecurityDecorator extends PedidoServiceDecorator {
     }
 
     private void checkPermission() {
-        boolean autorizado = true; // Simulación
-
+        boolean autorizado = true;
         if (!autorizado) {
             throw new SecurityException("Usuario no autorizado.");
         }
     }
 
     @Override
-    public void crearPedido(Pedido pedido) {
+    public void crearPedido(String nombre, double precio) {
         checkPermission();
-        super.crearPedido(pedido);
+        super.crearPedido(nombre, precio);
     }
 
     @Override

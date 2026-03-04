@@ -1,7 +1,6 @@
 package application.decorators;
 
 import application.IPedidoService;
-import domain.Pedido;
 
 public class LoggingDecorator extends PedidoServiceDecorator {
 
@@ -10,9 +9,9 @@ public class LoggingDecorator extends PedidoServiceDecorator {
     }
 
     @Override
-    public void crearPedido(Pedido pedido) {
+    public void crearPedido(String nombre, double precio) {
         System.out.println("[LOG] Iniciando creación de pedido...");
-        super.crearPedido(pedido);
+        super.crearPedido(nombre, precio);
         System.out.println("[LOG] Pedido creado.");
     }
 

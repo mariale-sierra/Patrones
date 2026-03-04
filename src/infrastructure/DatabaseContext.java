@@ -7,8 +7,13 @@ import java.util.List;
 public class DatabaseContext {
 
     private List<Pedido> pedidos = new ArrayList<>();
+    private int currentId = 1;
 
     public List<Pedido> getPedidos() {
         return pedidos;
+    }
+
+    public int generateId() {
+        return currentId++;
     }
 }

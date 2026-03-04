@@ -1,15 +1,3 @@
-    //infrastructure
-DatabaseContext databaseContext = new DatabaseContext();
-IPedidoRepository repository = new PedidoRepository();
-IUnitOfWork unitOfWork = new UnitOfWork();
-
-IPedidoService service = new PedidoService(repository, unitOfWork);
-
-// Decorators (tu parte)
-pedidoService = new ValidationDecorator(pedidoService);
-pedidoService = new LoggingDecorator(pedidoService);
-pedidoService = new SecurityDecorator(pedidoService);
-
 package main;
 
 import application.IPedidoService;
@@ -28,23 +16,22 @@ public class Main {
 
     public static void main(String[] args) {
 
-
-
-
+        DatabaseContext databaseContext = new DatabaseContext();
+        IPedidoRepository repository = new PedidoRepository(databaseContext);
+        IUnitOfWork unitOfWork = new UnitOfWork(databaseContext);
         PedidoPrototype prototype = new PedidoPrototype();
 
-        IPedidoService pedidoService = new PedidoService(
-                repository,
-                unitOfWork,
-                prototype
-        );
+        IPedidoService pedidoService =
+                new PedidoService(repository, unitOfWork, prototype);
 
-        
+        // Decorators
+        pedidoService = new ValidationDecorator(pedidoService);
+        pedidoService = new LoggingDecorator(pedidoService);
+        pedidoService = new SecurityDecorator(pedidoService);
 
-
-        // simulacion
+        // Simulación
         System.out.println("-------- CREAR PEDIDO -------- ");
-        pedidoService.crearPedido(1);
+        pedidoService.crearPedido("Laptop", 1000);
 
         System.out.println("-------- CONFIRMAR PEDIDO -------- ");
         pedidoService.confirmarPedido(1);

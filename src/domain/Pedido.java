@@ -56,6 +56,10 @@ public class Pedido {
         return estado;
     }
 
+    public List<Producto> getProductos() {
+    return productos;
+    }
+
     public double getTotal() {
         return total;
     }
